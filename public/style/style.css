@@ -1,44 +1,59 @@
-*{
+* {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
+  user-select: none;
 }
 
-body{
+body {
   display: flex;
   flex-direction: column;
   gap: 40px;
 
 }
 
-.table, input[type="submit"]{
+.table,
+input[type="submit"] {
   width: 825px;
 }
 
-.list-group{
+.list-group {
   width: 285px;
   height: 408px;
   padding: 0 15px;
 }
 
-.main{
+.main {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 30px;
 }
 
-.tablee{
+.tablee {
   width: 825px;
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-a{
+a {
   text-decoration: none;
 }
 
-th{
+th {
   width: auto;
+}
+
+.material-symbols-outlined {
+  cursor: pointer;
+
+}
+
+.toggle {
+  font-variation-settings:
+    'FILL' 1,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 48
 }
