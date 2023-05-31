@@ -18,11 +18,11 @@ document.body.innerHTML = `
   <div class="main">
     <div class="list">
       <ul class="list-group">
-        <li class="list-group-item" aria-current="true">All Genres</li>
-        <li class="list-group-item">Action</li>
-        <li class="list-group-item">Comedy</li>
-        <li class="list-group-item">Romance</li>
-        <li class="list-group-item">Thriller</li>
+        <li class="list-group-item allg" aria-current="true">All Genres</li>
+        <li class="list-group-item action">Action</li>
+        <li class="list-group-item comedy">Comedy</li>
+        <li class="list-group-item romance">Romance</li>
+        <li class="list-group-item thriller">Thriller</li>
       </ul>
     </div>
 
@@ -103,7 +103,7 @@ fetch('https://pdp-movies-78.onrender.com/api/movies')
 
       const heartIcons = document.querySelectorAll('.favorite-icon');
       heartIcons.forEach(icon => {
-        icon.addEventListener('click', function() {
+        icon.addEventListener('click', function () {
           this.classList.toggle('toggle');
         });
       });
@@ -142,20 +142,88 @@ fetch('https://pdp-movies-78.onrender.com/api/movies')
     });
 
     const search = document.querySelector('.search');
-    search.addEventListener('input', function(e) {
+    search.addEventListener('input', function (e) {
       const value = e.target.value.toLowerCase();
-    
+
       const filteredData = data.filter(movie => {
         return movie.title.toLowerCase().includes(value);
       });
-    
+
       currentPage = 1;
       loadMovies(currentPage, filteredData);
       totalPages = Math.ceil(filteredData.length / itemsPerPage);
       updatePagination();
     });
-    
+
+    const allGenres = document.querySelector('.allg');
+    const action = document.querySelector('.action');
+    const comedy = document.querySelector('.comedy');
+    const romance = document.querySelector('.romance');
+    const thriller = document.querySelector('.thriller');
+
+    function listGroup(genreName) {
+      const filteredData = data.filter(movie => {
+        return movie.genre.name.toLowerCase() === genreName.toLowerCase();
+      });
+
+      currentPage = 1;
+      loadMovies(currentPage, filteredData);
+      totalPages = Math.ceil(filteredData.length / itemsPerPage);
+      updatePagination();
+    }
+  
+    allGenres.addEventListener('click',function(){
+      action.classList.remove('active');
+      comedy.classList.remove('active');
+      romance.classList.remove('active');
+      thriller.classList.remove('active');
+      allGenres.classList.add('active');
+
+      listGroup(data.genre.name);
+    });
+
+    action.addEventListener('click', function(){
+      allGenres.classList.remove('active');
+      comedy.classList.remove('active');
+      romance.classList.remove('active');
+      thriller.classList.remove('active');
+      action.classList.add('active');
+
+      listGroup('Action');
+    });
+
+    comedy.addEventListener('click', function(){
+      allGenres.classList.remove('active');
+      action.classList.remove('active');
+      romance.classList.remove('active');
+      thriller.classList.remove('active');
+      comedy.classList.add('active');
+
+      listGroup('comedy');
+    });
+
+    romance.addEventListener('click', function(){
+      allGenres.classList.remove('active');
+      comedy.classList.remove('active');
+      action.classList.remove('active');
+      thriller.classList.remove('active');
+      romance.classList.add('active');
+
+      listGroup('romance');
+    });
+
+    thriller.addEventListener('click', function(){
+      allGenres.classList.remove('active');
+      comedy.classList.remove('active');
+      romance.classList.remove('active');
+      action.classList.remove('active');
+      thriller.classList.add('active');
+
+      listGroup('thriller');
+    });
+  
   })
+
   .catch(error => {
     console.log('Xatolik yuz berdi:', error);
   });
