@@ -28,7 +28,7 @@ document.body.innerHTML = `
 
     <div class="tablee">
       <p>Showing <span>12</span> movies in the database.</p>
-      <input class="form-control me-2" type="search" placeholder="Search..." aria-label="Search">
+      <input class="form-control me-2 search" type="search" placeholder="Search..." aria-label="Search">
       <table class="table">
         <thead>
           <tr>
@@ -66,7 +66,7 @@ fetch('https://pdp-movies-78.onrender.com/api/movies')
     const totalPages = Math.ceil(data.length / itemsPerPage);
     let currentPage = 1;
 
-    function loadMovies(page) {
+    function loadMovies(page, data) {
       const start = (page - 1) * itemsPerPage;
       const end = start + itemsPerPage;
       const currentPageData = data.slice(start, end);
@@ -109,7 +109,7 @@ fetch('https://pdp-movies-78.onrender.com/api/movies')
       });
     }
 
-    loadMovies(currentPage);
+    loadMovies(currentPage, data);
 
     function updatePagination() {
       pagination.innerHTML = '';
@@ -136,10 +136,25 @@ fetch('https://pdp-movies-78.onrender.com/api/movies')
     pagination.addEventListener('click', event => {
       if (event.target.tagName === 'A') {
         currentPage = parseInt(event.target.textContent);
-        loadMovies(currentPage);
+        loadMovies(currentPage, data);
         updatePagination();
       }
     });
+
+    const search = document.querySelector('.search');
+    search.addEventListener('input', function(e) {
+      const value = e.target.value.toLowerCase();
+    
+      const filteredData = data.filter(movie => {
+        return movie.title.toLowerCase().includes(value);
+      });
+    
+      currentPage = 1;
+      loadMovies(currentPage, filteredData);
+      totalPages = Math.ceil(filteredData.length / itemsPerPage);
+      updatePagination();
+    });
+    
   })
   .catch(error => {
     console.log('Xatolik yuz berdi:', error);
