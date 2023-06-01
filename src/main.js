@@ -145,6 +145,11 @@ fetch('https://pdp-movies-78.onrender.com/api/movies')
     search.addEventListener('input', function (e) {
       const value = e.target.value.toLowerCase();
 
+      pagination.style.display = 'none';
+
+      if(value === '') pagination.style.display = 'flex';
+
+
       const filteredData = data.filter(movie => {
         return movie.title.toLowerCase().includes(value);
       });
@@ -153,6 +158,7 @@ fetch('https://pdp-movies-78.onrender.com/api/movies')
       loadMovies(currentPage, filteredData);
       totalPages = Math.ceil(filteredData.length / itemsPerPage);
       updatePagination();
+
     });
 
     const allGenres = document.querySelector('.allg');
@@ -178,7 +184,7 @@ fetch('https://pdp-movies-78.onrender.com/api/movies')
       romance.classList.remove('active');
       thriller.classList.remove('active');
       allGenres.classList.add('active');
-
+      pagination.style.display = 'flex';
       listGroup(data.genre.name);
     });
 
@@ -189,6 +195,7 @@ fetch('https://pdp-movies-78.onrender.com/api/movies')
       thriller.classList.remove('active');
       action.classList.add('active');
 
+      pagination.style.display = 'none';
       listGroup('Action');
     });
 
@@ -199,6 +206,7 @@ fetch('https://pdp-movies-78.onrender.com/api/movies')
       thriller.classList.remove('active');
       comedy.classList.add('active');
 
+      pagination.style.display = 'none';
       listGroup('comedy');
     });
 
@@ -209,6 +217,7 @@ fetch('https://pdp-movies-78.onrender.com/api/movies')
       thriller.classList.remove('active');
       romance.classList.add('active');
 
+      pagination.style.display = 'none';
       listGroup('romance');
     });
 
@@ -218,7 +227,8 @@ fetch('https://pdp-movies-78.onrender.com/api/movies')
       romance.classList.remove('active');
       action.classList.remove('active');
       thriller.classList.add('active');
-
+      
+      pagination.style.display = 'none';
       listGroup('thriller');
     });
   
