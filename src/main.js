@@ -25,7 +25,6 @@ document.body.innerHTML = `
         <li class="list-group-item thriller">Thriller</li>
       </ul>
     </div>
-
     <div class="tablee">
       <p>Showing <span>12</span> movies in the database.</p>
       <input class="form-control me-2 search" type="search" placeholder="Search..." aria-label="Search">
@@ -58,18 +57,20 @@ const pagination = document.querySelector('.pagination');
 fetch('https://pdp-movies-78.onrender.com/api/movies')
   .then(res => res.json())
   .then(data => {
+
     console.log(data);
 
     let tbody = document.querySelector('tbody');
 
-    const itemsPerPage = 4;
-    const totalPages = Math.ceil(data.length / itemsPerPage);
+    const qatorlarSoniPan = 4;
+    const totalPages = Math.ceil(data.length / qatorlarSoniPan);
     let currentPage = 1;
 
     function loadMovies(page, data) {
-      const start = (page - 1) * itemsPerPage;
-      const end = start + itemsPerPage;
+      const start = (page - 1) * qatorlarSoniPan;
+      const end = start + qatorlarSoniPan;
       const currentPageData = data.slice(start, end);
+      console.log(currentPageData);
 
       tbody.innerHTML = '';
 
@@ -147,7 +148,7 @@ fetch('https://pdp-movies-78.onrender.com/api/movies')
 
       pagination.style.display = 'none';
 
-      if(value === '') pagination.style.display = 'flex';
+      if (value === '') pagination.style.display = 'flex';
 
 
       const filteredData = data.filter(movie => {
@@ -156,7 +157,7 @@ fetch('https://pdp-movies-78.onrender.com/api/movies')
 
       currentPage = 1;
       loadMovies(currentPage, filteredData);
-      totalPages = Math.ceil(filteredData.length / itemsPerPage);
+      totalPages = Math.ceil(filteredData.length / qatorlarSoniPan);
       updatePagination();
 
     });
@@ -174,11 +175,11 @@ fetch('https://pdp-movies-78.onrender.com/api/movies')
 
       currentPage = 1;
       loadMovies(currentPage, filteredData);
-      totalPages = Math.ceil(filteredData.length / itemsPerPage);
+      totalPages = Math.ceil(filteredData.length / qatorlarSoniPan);
       updatePagination();
     }
-  
-    allGenres.addEventListener('click',function(){
+
+    allGenres.addEventListener('click', function () {
       action.classList.remove('active');
       comedy.classList.remove('active');
       romance.classList.remove('active');
@@ -188,7 +189,7 @@ fetch('https://pdp-movies-78.onrender.com/api/movies')
       listGroup(data.genre.name);
     });
 
-    action.addEventListener('click', function(){
+    action.addEventListener('click', function () {
       allGenres.classList.remove('active');
       comedy.classList.remove('active');
       romance.classList.remove('active');
@@ -199,7 +200,7 @@ fetch('https://pdp-movies-78.onrender.com/api/movies')
       listGroup('Action');
     });
 
-    comedy.addEventListener('click', function(){
+    comedy.addEventListener('click', function () {
       allGenres.classList.remove('active');
       action.classList.remove('active');
       romance.classList.remove('active');
@@ -210,7 +211,7 @@ fetch('https://pdp-movies-78.onrender.com/api/movies')
       listGroup('comedy');
     });
 
-    romance.addEventListener('click', function(){
+    romance.addEventListener('click', function () {
       allGenres.classList.remove('active');
       comedy.classList.remove('active');
       action.classList.remove('active');
@@ -221,17 +222,17 @@ fetch('https://pdp-movies-78.onrender.com/api/movies')
       listGroup('romance');
     });
 
-    thriller.addEventListener('click', function(){
+    thriller.addEventListener('click', function () {
       allGenres.classList.remove('active');
       comedy.classList.remove('active');
       romance.classList.remove('active');
       action.classList.remove('active');
       thriller.classList.add('active');
-      
+
       pagination.style.display = 'none';
       listGroup('thriller');
     });
-  
+
   })
 
   .catch(error => {
