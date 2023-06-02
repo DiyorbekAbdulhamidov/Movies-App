@@ -8,7 +8,7 @@ document.body.innerHTML = `
             <a class="nav-link active" aria-current="page" href="#">Login</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Register</a>
+            <a class="nav-link registerPage" href="#">Register</a>
           </li>
         </ul>
       </div>
@@ -26,7 +26,7 @@ document.body.innerHTML = `
       </ul>
     </div>
     <div class="tablee">
-      <p>Showing <span>12</span> movies in the database.</p>
+      <p>Showing <span class="countMov">0</span> movies in the database.</p>
       <input class="form-control me-2 search" type="search" placeholder="Search..." aria-label="Search">
       <table class="table">
         <thead>
@@ -35,7 +35,7 @@ document.body.innerHTML = `
             <th scope="col">Genre</th>
             <th scope="col">Stock</th>
             <th scope="col">Rate</th>
-            <th scope="col">Favorite</th>
+            <th scope="col"></th>
           </tr>
         </thead>
         <tbody></tbody>
@@ -53,188 +53,181 @@ document.body.innerHTML = `
 
 const table = document.querySelector('table');
 const pagination = document.querySelector('.pagination');
+const allg = document.querySelector('.allg');
+const action = document.querySelector('.action');
+const comedy = document.querySelector('.comedy');
+const romance = document.querySelector('.romance');
+const thriller = document.querySelector('.thriller');
+const searchInput = document.querySelector('.search');
+const genres = document.querySelectorAll('.list-group');
+const registerPage = document.querySelector('.registerPage');
 
+registerPage.addEventListener('click',function(e){
+  e.preventDefault();
+  window.location.href = 'http://127.0.0.1:5500/public/register.html';
+});
+
+
+// Backenddan malumot olish
 fetch('https://pdp-movies-78.onrender.com/api/movies')
   .then(res => res.json())
   .then(data => {
-
-    console.log(data);
-
-    let tbody = document.querySelector('tbody');
-
-    const qatorlarSoniPan = 4;
-    const totalPages = Math.ceil(data.length / qatorlarSoniPan);
-    let currentPage = 1;
+    const numMovies = document.querySelector('.countMov');
+    const tbody = document.querySelector('tbody');
 
     function loadMovies(page, data) {
+      const qatorlarSoniPan = 4;
       const start = (page - 1) * qatorlarSoniPan;
       const end = start + qatorlarSoniPan;
       const currentPageData = data.slice(start, end);
-      console.log(currentPageData);
 
       tbody.innerHTML = '';
 
       for (let i = 0; i < currentPageData.length; i++) {
-        let tr = document.createElement('tr');
-        let th = document.createElement('th');
-
-        th.scope = 'row';
-        th.innerHTML = `<a href="">${currentPageData[i].title}</a>`;
-
-        let genreNameTd = document.createElement('td');
-        genreNameTd.textContent = currentPageData[i].genre.name;
-
-        let stockTd = document.createElement('td');
-        stockTd.textContent = currentPageData[i].numberInStock;
-
-        let rateTd = document.createElement('td');
-        rateTd.textContent = currentPageData[i].dailyRentalRate;
-
-        let heartIcon = document.createElement('td');
-        heartIcon.className = 'material-symbols-outlined favorite-icon';
-        heartIcon.textContent = 'favorite';
-
-        tr.appendChild(th);
-        tr.appendChild(genreNameTd);
-        tr.appendChild(stockTd);
-        tr.appendChild(rateTd);
-        tr.appendChild(heartIcon);
+        const movie = currentPageData[i];
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${movie.title}</td>
+          <td>${movie.genre.name}</td>
+          <td>${movie.numberInStock}</td>
+          <td>${movie.dailyRentalRate}</td>
+          <td><span class="material-symbols-outlined heart">favorite</span></td>
+        `;
         tbody.appendChild(tr);
       }
-
-      const heartIcons = document.querySelectorAll('.favorite-icon');
-      heartIcons.forEach(icon => {
-        icon.addEventListener('click', function () {
-          this.classList.toggle('toggle');
-        });
-      });
     }
 
-    loadMovies(currentPage, data);
+    const hearts = document.querySelectorAll('.heart');
 
-    function updatePagination() {
+    hearts.forEach((heart) => {
+      heart.addEventListener('click', function () {
+        heart.classList.add('toggle');        
+      });
+    });
+
+    function loadPagination(data) {
       pagination.innerHTML = '';
+
+      const totalPages = Math.ceil(data.length / 4);
 
       for (let i = 1; i <= totalPages; i++) {
         const li = document.createElement('li');
-        li.className = 'page-item';
-        if (i === currentPage) {
+        li.classList.add('page-item');
+        if (i === 1) {
           li.classList.add('active');
         }
-
         const a = document.createElement('a');
-        a.className = 'page-link';
+        a.classList.add('page-link');
         a.href = '#';
         a.textContent = i;
-
         li.appendChild(a);
         pagination.appendChild(li);
       }
-    }
 
-    updatePagination();
-
-    pagination.addEventListener('click', event => {
-      if (event.target.tagName === 'A') {
-        currentPage = parseInt(event.target.textContent);
-        loadMovies(currentPage, data);
-        updatePagination();
-      }
-    });
-
-    const search = document.querySelector('.search');
-    search.addEventListener('input', function (e) {
-      const value = e.target.value.toLowerCase();
-
-      pagination.style.display = 'none';
-
-      if (value === '') pagination.style.display = 'flex';
-
-
-      const filteredData = data.filter(movie => {
-        return movie.title.toLowerCase().includes(value);
+      pagination.addEventListener('click', function(e) {
+        if (e.target.tagName === 'A') {
+          const activePage = document.querySelector('.pagination .active');
+          activePage.classList.remove('active');
+          e.target.parentNode.classList.add('active');
+          const page = parseInt(e.target.textContent);
+          loadMovies(page, data);
+        }
       });
-
-      currentPage = 1;
-      loadMovies(currentPage, filteredData);
-      totalPages = Math.ceil(filteredData.length / qatorlarSoniPan);
-      updatePagination();
-
-    });
-
-    const allGenres = document.querySelector('.allg');
-    const action = document.querySelector('.action');
-    const comedy = document.querySelector('.comedy');
-    const romance = document.querySelector('.romance');
-    const thriller = document.querySelector('.thriller');
+    }
 
     function listGroup(genreName) {
-      const filteredData = data.filter(movie => {
-        return movie.genre.name.toLowerCase() === genreName.toLowerCase();
-      });
-
-      currentPage = 1;
-      loadMovies(currentPage, filteredData);
-      totalPages = Math.ceil(filteredData.length / qatorlarSoniPan);
-      updatePagination();
+      const filteredData = data.filter(movie => movie.genre.name.toLowerCase() === genreName);
+      loadMovies(1, filteredData);
+      loadPagination(filteredData);
+      numMovies.textContent = filteredData.length;
     }
 
-    allGenres.addEventListener('click', function () {
-      action.classList.remove('active');
-      comedy.classList.remove('active');
-      romance.classList.remove('active');
-      thriller.classList.remove('active');
-      allGenres.classList.add('active');
-      pagination.style.display = 'flex';
-      listGroup(data.genre.name);
-    });
+    function searchMovies(soz) {
+      const filteredData = data.filter(movie => movie.title.toLowerCase().includes(soz.toLowerCase()));
+      loadMovies(1, filteredData);
+      loadPagination(filteredData);
+      numMovies.textContent = filteredData.length;
+    }
 
-    action.addEventListener('click', function () {
-      allGenres.classList.remove('active');
-      comedy.classList.remove('active');
-      romance.classList.remove('active');
-      thriller.classList.remove('active');
-      action.classList.add('active');
+    function listeners(){
 
-      pagination.style.display = 'none';
-      listGroup('Action');
-    });
+      function activochirish(){
+        genres.forEach(function(janr){
+          if(janr.classList.contains('active')){
+            janr.classList.remove('active');
+          }
+        })
+      };
 
-    comedy.addEventListener('click', function () {
-      allGenres.classList.remove('active');
-      action.classList.remove('active');
-      romance.classList.remove('active');
-      thriller.classList.remove('active');
-      comedy.classList.add('active');
+      allg.addEventListener('click', function() {
+        loadMovies(1, data);
+        loadPagination(data);
+        numMovies.textContent = data.length;
+        // activochirish();
+        allg.classList.add('active');
+        action.classList.remove('active');
+        comedy.classList.remove('active');
+        romance.classList.remove('active');
+        thriller.classList.remove('active');
+      });
+  
+      action.addEventListener('click', function() {
+        listGroup('action');
+        // activochirish();
+        action.classList.add('active');
+        allg.classList.remove('active');
+        comedy.classList.remove('active');
+        romance.classList.remove('active');
+        thriller.classList.remove('active');
+      });
+  
+      comedy.addEventListener('click', function() {
+        listGroup('comedy');
+        // activochirish();
+        comedy.classList.add('active');
+        allg.classList.remove('active');
+        action.classList.remove('active');
+        romance.classList.remove('active');
+        thriller.classList.remove('active');
 
-      pagination.style.display = 'none';
-      listGroup('comedy');
-    });
+      });
+  
+      romance.addEventListener('click', function() {
+        listGroup('romance');
+        // activochirish();
+        romance.classList.add('active');
+        allg.classList.remove('active');
+        action.classList.remove('active');
+        comedy.classList.remove('active');
+        thriller.classList.remove('active');
+      });
+  
+      thriller.addEventListener('click', function() {
+        listGroup('thriller');
+        // activochirish();
+        thriller.classList.add('active');
+        allg.classList.remove('active');
+        action.classList.remove('active');
+        comedy.classList.remove('active');
+        romance.classList.remove('active');
+        
+      });
+  
+      searchInput.addEventListener('input', function() {
+        searchMovies(searchInput.value);
+      });
+  
+      loadMovies(1, data);
+      loadPagination(data);
+      numMovies.textContent = data.length;
+    };
 
-    romance.addEventListener('click', function () {
-      allGenres.classList.remove('active');
-      comedy.classList.remove('active');
-      action.classList.remove('active');
-      thriller.classList.remove('active');
-      romance.classList.add('active');
-
-      pagination.style.display = 'none';
-      listGroup('romance');
-    });
-
-    thriller.addEventListener('click', function () {
-      allGenres.classList.remove('active');
-      comedy.classList.remove('active');
-      romance.classList.remove('active');
-      action.classList.remove('active');
-      thriller.classList.add('active');
-
-      pagination.style.display = 'none';
-      listGroup('thriller');
-    });
+    function init(){
+      listeners();
+    }
+    init();
 
   })
-
   .catch(error => {
     console.log('Xatolik yuz berdi:', error);
   });

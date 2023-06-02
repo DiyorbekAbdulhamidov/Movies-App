@@ -9,7 +9,6 @@ body {
   display: flex;
   flex-direction: column;
   gap: 40px;
-
 }
 
 .table,
@@ -56,4 +55,8 @@ th {
     'wght' 400,
     'GRAD' 0,
     'opsz' 48
-}
+} 
+
+input[type="email"]{
+  width: 1100px;
+} 
