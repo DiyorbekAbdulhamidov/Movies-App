@@ -33,6 +33,7 @@ form.addEventListener('submit', async (event) => {
     });
     console.log(response.data);
     alert(`Ro'yxatdan o'tdingiz, Rahmat😉`);
+    window.location.href = "http://127.0.0.1:5500/public/index.html"
   } 
   catch (error) {
     console.error(error);
