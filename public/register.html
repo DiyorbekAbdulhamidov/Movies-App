@@ -27,23 +27,24 @@
     </div>
   </nav>
   <div class="main">
-    <form>
+    <form class="regForm">
       <h2>Register</h2>
       <div class="mb-3">
         <label for="exampleInputEmail1" class="form-label">Username</label>
-        <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+        <input type="text" class="form-control email" id="exampleInputEmail1" aria-describedby="emailHelp">
       </div>
       <div class="mb-3">
         <label for="exampleInputPassword1" class="form-label">Password</label>
-        <input type="password" class="form-control" id="exampleInputPassword1">
+        <input type="password" class="form-control password" id="exampleInputPassword1">
       </div>
       <div class="mb-3">
         <label for="exampleInputPassword1" class="form-label">Name</label>
-        <input type="password" class="form-control" id="exampleInputPassword1">
+        <input type="password" class="form-control name" id="exampleInputPassword2">
       </div>
-      <button type="submit" class="btn btn-primary">Register</button>
+      <button type="submit" class="btn btn-primary registerBtn">Register</button>
     </form>
   </div>
-  <script type="module" src="/src/register.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="/src/register.js"></script>
 </body>
 </html> 

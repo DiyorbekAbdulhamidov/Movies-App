@@ -69,3 +69,10 @@ th {
 input[type="text"]{
   width: 1100px;
 } 
+
+.titleTh,
+.genreTh,
+.stockTh,
+.rateTh{
+  cursor: pointer;
+}

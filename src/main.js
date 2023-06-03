@@ -31,10 +31,10 @@ document.body.innerHTML = `
       <table class="table">
         <thead>
           <tr>
-            <th scope="col">Title</th>
-            <th scope="col">Genre</th>
-            <th scope="col">Stock</th>
-            <th scope="col">Rate</th>
+            <th scope="col" class="titleTh">Title</th>
+            <th scope="col" class="genreTh">Genre</th>
+            <th scope="col" class="stockTh">Stock</th>
+            <th scope="col" class="rateTh">Rate</th>
             <th scope="col"></th>
           </tr>
         </thead>
@@ -53,6 +53,8 @@ document.body.innerHTML = `
 
 const table = document.querySelector('table');
 const pagination = document.querySelector('.pagination');
+const numMovies = document.querySelector('.countMov');
+const tbody = document.querySelector('tbody');
 const allg = document.querySelector('.allg');
 const action = document.querySelector('.action');
 const comedy = document.querySelector('.comedy');
@@ -62,6 +64,10 @@ const searchInput = document.querySelector('.search');
 const genres = document.querySelectorAll('.list-group');
 const registerPage = document.querySelector('.registerPage');
 const loginPage = document.querySelector('.loginPage');
+const titleTh = document.querySelector('.titleTh');
+const genreTh = document.querySelector('.genreTh');
+const stockTh = document.querySelector('.stockTh');
+const rateTh = document.querySelector('.rateTh');
 
 registerPage.addEventListener('click',function(){
   window.location.href = 'http://127.0.0.1:5500/public/register.html';
@@ -75,8 +81,6 @@ loginPage.addEventListener('click',function(){
 fetch('https://pdp-movies-78.onrender.com/api/movies')
   .then(res => res.json())
   .then(data => {
-    const numMovies = document.querySelector('.countMov');
-    const tbody = document.querySelector('tbody');
 
     function loadMovies(page, data) {
       const qatorlarSoniPan = 4;
