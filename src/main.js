@@ -5,7 +5,7 @@ document.body.innerHTML = `
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Login</a>
+            <a class="nav-link loginPage" aria-current="page" href="#">Login</a>
           </li>
           <li class="nav-item">
             <a class="nav-link registerPage" href="#">Register</a>
@@ -61,14 +61,17 @@ const thriller = document.querySelector('.thriller');
 const searchInput = document.querySelector('.search');
 const genres = document.querySelectorAll('.list-group');
 const registerPage = document.querySelector('.registerPage');
+const loginPage = document.querySelector('.loginPage');
 
-registerPage.addEventListener('click',function(e){
-  e.preventDefault();
+registerPage.addEventListener('click',function(){
   window.location.href = 'http://127.0.0.1:5500/public/register.html';
+  registerPage.classList.add('active');
 });
 
+loginPage.addEventListener('click',function(){
+  window.location.href = 'http://127.0.0.1:5500/public/login.html';
+})
 
-// Backenddan malumot olish
 fetch('https://pdp-movies-78.onrender.com/api/movies')
   .then(res => res.json())
   .then(data => {
@@ -87,17 +90,17 @@ fetch('https://pdp-movies-78.onrender.com/api/movies')
         const movie = currentPageData[i];
         const tr = document.createElement('tr');
         tr.innerHTML = `
-          <td>${movie.title}</td>
+          <td id= "titles">${movie.title}</td>
           <td>${movie.genre.name}</td>
           <td>${movie.numberInStock}</td>
           <td>${movie.dailyRentalRate}</td>
-          <td><span class="material-symbols-outlined heart">favorite</span></td>
+          <td><span class="material-symbols-outlined" id="heart">favorite</span></td>
         `;
         tbody.appendChild(tr);
       }
     }
 
-    const hearts = document.querySelectorAll('.heart');
+    const hearts = document.querySelectorAll('#heart');
 
     hearts.forEach((heart) => {
       heart.addEventListener('click', function () {
@@ -214,6 +217,11 @@ fetch('https://pdp-movies-78.onrender.com/api/movies')
       });
   
       searchInput.addEventListener('input', function() {
+        allg.classList.remove('active');
+        action.classList.remove('active');
+        comedy.classList.remove('active');
+        romance.classList.remove('active');
+        thriller.classList.remove('active');
         searchMovies(searchInput.value);
       });
   
