@@ -11,16 +11,16 @@ if (window.location.href === 'http://127.0.0.1:5500/public/register.html#' || wi
   registerA.classList.add('active');
 }
 
-loginA.addEventListener('click', function() {
+loginA.addEventListener('click', function () {
   window.location.href = 'http://127.0.0.1:5500/public/login.html';
 });
 
-brendName.addEventListener('click', function() {
+brendName.addEventListener('click', function () {
   window.location.href = 'http://127.0.0.1:5500/public/index.html';
 });
 
-form.addEventListener('submit', async (event) => {
-  event.preventDefault();
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
   const email = emailInput.value;
   const password = passwordInput.value;
   const name = nameInput.value;
@@ -34,12 +34,12 @@ form.addEventListener('submit', async (event) => {
     console.log(response.data);
     alert(`Ro'yxatdan o'tdingiz, Rahmat😉`);
     window.location.href = "http://127.0.0.1:5500/public/index.html"
-  } 
+  }
   catch (error) {
     console.error(error);
     if (error.response) {
       alert(`Serverda xatolik yuz berdi: ${error.response.data}`);
-    } 
+    }
     else {
       alert(`Ma'lumotlar serverga jo'natilmadi!❌`);
     }
