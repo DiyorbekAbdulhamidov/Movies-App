@@ -1,4 +1,4 @@
-import { links } from "./links.js";
+import { links } from "/utils/";
 
 const loginA = document.querySelector('.login');
 const registerA = document.querySelector('.register');

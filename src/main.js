@@ -1,4 +1,4 @@
-import { links } from "./links.js";
+import { links } from "../utils/links.js";
 
 document.body.innerHTML = `
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -28,6 +28,7 @@ document.body.innerHTML = `
       </ul>
     </div>
     <div class="tablee">
+      <button class="btn btn-primary newMoviBtn hide">New Movie</button>
       <p>Showing <span class="countMov">0</span> movies in the database.</p>
       <input class="form-control me-2 search" type="search" placeholder="Search..." aria-label="Search">
       <table class="table">
@@ -53,10 +54,9 @@ document.body.innerHTML = `
   </div>
 `;
 
-const table = document.querySelector('table');
+const tbody = document.querySelector('tbody');
 const pagination = document.querySelector('.pagination');
 const numMovies = document.querySelector('.countMov');
-const tbody = document.querySelector('tbody');
 const allg = document.querySelector('.allg');
 const action = document.querySelector('.action');
 const comedy = document.querySelector('.comedy');
@@ -70,10 +70,10 @@ const titleTh = document.querySelector('.titleTh');
 const genreTh = document.querySelector('.genreTh');
 const stockTh = document.querySelector('.stockTh');
 const rateTh = document.querySelector('.rateTh');
+const newMoviBtn = document.querySelector('.newMoviBtn');
 
 
 const userToken = localStorage.getItem('userToken');
-
 axios.get('https://pdp-movies-78.onrender.com/api/users/me', {
   headers: {
     'x-auth-token': userToken
@@ -85,6 +85,7 @@ axios.get('https://pdp-movies-78.onrender.com/api/users/me', {
 
     loginPage.textContent = userData.name;
     registerPage.textContent = 'Logout';
+    newMoviBtn.classList.remove('hide');
 
     loginPage.addEventListener('click', function () {
       if (loginPage.textContent === userData.name)
@@ -95,6 +96,7 @@ axios.get('https://pdp-movies-78.onrender.com/api/users/me', {
       if (registerPage.textContent === 'Logout') {
         loginPage.textContent = 'Login';
         registerPage.textContent = 'Register';
+        newMoviBtn.classList.add('hide');
         localStorage.removeItem('userToken');
       };
     });
@@ -259,6 +261,10 @@ fetch('https://pdp-movies-78.onrender.com/api/movies')
         romance.classList.remove('active');
         thriller.classList.remove('active');
         searchMovies(searchInput.value);
+      });
+
+      newMoviBtn.addEventListener('click', function () {
+        window.location.href = `${links.newMovieLink}`;
       });
 
       loadMovies(1, data);

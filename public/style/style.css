@@ -76,3 +76,11 @@ input[type="text"]{
 .rateTh{
   cursor: pointer;
 }
+
+.newMoviBtn{
+  width: 120px;
+}
+
+.hide{
+  display: none;
+}
