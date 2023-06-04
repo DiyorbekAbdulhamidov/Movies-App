@@ -1,3 +1,5 @@
+import { links } from "./links.js";
+
 document.body.innerHTML = `
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
@@ -69,14 +71,46 @@ const genreTh = document.querySelector('.genreTh');
 const stockTh = document.querySelector('.stockTh');
 const rateTh = document.querySelector('.rateTh');
 
-registerPage.addEventListener('click',function(){
-  window.location.href = 'http://127.0.0.1:5500/public/register.html';
-  registerPage.classList.add('active');
+
+const userToken = localStorage.getItem('userToken');
+
+axios.get('https://pdp-movies-78.onrender.com/api/users/me', {
+  headers: {
+    'x-auth-token': userToken
+  }
+})
+  .then(response => {
+    const userData = response.data;
+    console.log(userData);
+
+    loginPage.textContent = userData.name;
+    registerPage.textContent = 'Logout';
+
+    loginPage.addEventListener('click', function () {
+      if (loginPage.textContent === userData.name)
+        alert('Not Found❌');
+    });
+
+    registerPage.addEventListener('click', function () {
+      if (registerPage.textContent === 'Logout') {
+        loginPage.textContent = 'Login';
+        registerPage.textContent = 'Register';
+        localStorage.removeItem('userToken');
+      };
+    });
+  })
+  .catch(error => {
+    console.log('Xatolik yuz berdi:', error);
+  });
+
+
+registerPage.addEventListener('click', function () {
+  window.location.href = links.registerLink;
 });
 
-loginPage.addEventListener('click',function(){
-  window.location.href = 'http://127.0.0.1:5500/public/login.html';
-})
+loginPage.addEventListener('click', function () {
+  window.location.href = links.loginLink;
+});
 
 fetch('https://pdp-movies-78.onrender.com/api/movies')
   .then(res => res.json())
@@ -94,7 +128,7 @@ fetch('https://pdp-movies-78.onrender.com/api/movies')
         const movie = currentPageData[i];
         const tr = document.createElement('tr');
         tr.innerHTML = `
-          <td id= "titles">${movie.title}</td>
+          <td id="titles">${movie.title}</td>
           <td>${movie.genre.name}</td>
           <td>${movie.numberInStock}</td>
           <td>${movie.dailyRentalRate}</td>
@@ -108,7 +142,7 @@ fetch('https://pdp-movies-78.onrender.com/api/movies')
 
     hearts.forEach((heart) => {
       heart.addEventListener('click', function () {
-        heart.classList.add('toggle');        
+        heart.classList.toggle('toggle');
       });
     });
 
@@ -131,7 +165,7 @@ fetch('https://pdp-movies-78.onrender.com/api/movies')
         pagination.appendChild(li);
       }
 
-      pagination.addEventListener('click', function(e) {
+      pagination.addEventListener('click', function (e) {
         if (e.target.tagName === 'A') {
           const activePage = document.querySelector('.pagination .active');
           activePage.classList.remove('active');
@@ -156,17 +190,17 @@ fetch('https://pdp-movies-78.onrender.com/api/movies')
       numMovies.textContent = filteredData.length;
     }
 
-    function listeners(){
+    function listeners() {
 
-      function activochirish(){
-        genres.forEach(function(janr){
-          if(janr.classList.contains('active')){
+      function aktivOchirish() {
+        genres.forEach(function (janr) {
+          if (janr.classList.contains('active')) {
             janr.classList.remove('active');
           }
-        })
-      };
+        });
+      }
 
-      allg.addEventListener('click', function() {
+      allg.addEventListener('click', function () {
         loadMovies(1, data);
         loadPagination(data);
         numMovies.textContent = data.length;
@@ -177,8 +211,8 @@ fetch('https://pdp-movies-78.onrender.com/api/movies')
         romance.classList.remove('active');
         thriller.classList.remove('active');
       });
-  
-      action.addEventListener('click', function() {
+
+      action.addEventListener('click', function () {
         listGroup('action');
         // activochirish();
         action.classList.add('active');
@@ -187,8 +221,8 @@ fetch('https://pdp-movies-78.onrender.com/api/movies')
         romance.classList.remove('active');
         thriller.classList.remove('active');
       });
-  
-      comedy.addEventListener('click', function() {
+
+      comedy.addEventListener('click', function () {
         listGroup('comedy');
         // activochirish();
         comedy.classList.add('active');
@@ -196,10 +230,9 @@ fetch('https://pdp-movies-78.onrender.com/api/movies')
         action.classList.remove('active');
         romance.classList.remove('active');
         thriller.classList.remove('active');
-
       });
-  
-      romance.addEventListener('click', function() {
+
+      romance.addEventListener('click', function () {
         listGroup('romance');
         // activochirish();
         romance.classList.add('active');
@@ -208,8 +241,8 @@ fetch('https://pdp-movies-78.onrender.com/api/movies')
         comedy.classList.remove('active');
         thriller.classList.remove('active');
       });
-  
-      thriller.addEventListener('click', function() {
+
+      thriller.addEventListener('click', function () {
         listGroup('thriller');
         // activochirish();
         thriller.classList.add('active');
@@ -217,10 +250,9 @@ fetch('https://pdp-movies-78.onrender.com/api/movies')
         action.classList.remove('active');
         comedy.classList.remove('active');
         romance.classList.remove('active');
-        
       });
-  
-      searchInput.addEventListener('input', function() {
+
+      searchInput.addEventListener('input', function () {
         allg.classList.remove('active');
         action.classList.remove('active');
         comedy.classList.remove('active');
@@ -228,18 +260,15 @@ fetch('https://pdp-movies-78.onrender.com/api/movies')
         thriller.classList.remove('active');
         searchMovies(searchInput.value);
       });
-  
+
       loadMovies(1, data);
       loadPagination(data);
       numMovies.textContent = data.length;
-    };
+    }
 
-    function init(){
+    function init() {
       listeners();
     }
     init();
 
-  })
-  .catch(error => {
-    console.log('Xatolik yuz berdi:', error);
   });

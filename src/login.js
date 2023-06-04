@@ -1,20 +1,4 @@
-// import { links } from "./links";
-
-// const loginA = document.querySelector('.login');
-// const registerA = document.querySelector('.register');
-// const brendName = document.querySelector('.navbar-brand');
-
-// if(window.location.href === `${links.loginLink}` || window.location.href === `${links.loginLink}#`){
-//   loginA.classList.add('active');
-// }
-
-// registerA.addEventListener('click', function(){
-//   window.location.href = `${links.registerLink}`;
-// });
-
-// brendName.addEventListener('click', function(){
-//   window.location.href = `${links.brendLink}`;
-// });
+import { links } from "./links.js";
 
 const loginA = document.querySelector('.login');
 const registerA = document.querySelector('.register');
@@ -23,16 +7,17 @@ const emailInput = document.getElementById('emailInput');
 const passwordInput = document.getElementById('passwordInput');
 const loginForm = document.getElementById('loginForm');
 
-if (window.location.href === 'http://127.0.0.1:5500/public/login.html#' || window.location.href === 'http://127.0.0.1:5500/public/login.html') {
+
+if(window.location.href === `${links.loginLink}` || window.location.href === `${links.loginLink}#`){
   loginA.classList.add('active');
 }
 
-registerA.addEventListener('click', function () {
-  window.location.href = 'http://127.0.0.1:5500/public/register.html';
+registerA.addEventListener('click', function(){
+  window.location.href = `${links.registerLink}`;
 });
 
-brendName.addEventListener('click', function () {
-  window.location.href = 'http://127.0.0.1:5500/public/index.html';
+brendName.addEventListener('click', function(){
+  window.location.href = `${links.brendLink}`;
 });
 
 loginForm.addEventListener('submit', async function (e) {
@@ -44,10 +29,13 @@ loginForm.addEventListener('submit', async function (e) {
     const response = await axios.post('https://pdp-movies-78.onrender.com/api/auth', {
       email,
       password
-    })
+    });
     console.log(response.data);
-    const userToken = response.data;
+    const userToken = response.data.data;
+    localStorage.setItem('userToken', userToken);
+    
     alert('Akkauntga kirdingiz, Rahmat😉');
+    location.href = `${links.brendLink}`
   } 
   catch (error) {
     console.error(error);
