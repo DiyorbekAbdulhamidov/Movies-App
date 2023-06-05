@@ -134,14 +134,14 @@ fetch('https://pdp-movies-78.onrender.com/api/movies')
           <td>${movie.genre.name}</td>
           <td>${movie.numberInStock}</td>
           <td>${movie.dailyRentalRate}</td>
-          <td><span class="material-symbols-outlined" id="heart">favorite</span></td>
+          <td><span class="material-symbols-outlined id="heart">favorite</span></td>
         `;
         tbody.appendChild(tr);
       }
     }
 
     const hearts = document.querySelectorAll('#heart');
-
+    console.log(hearts);
     hearts.forEach((heart) => {
       heart.addEventListener('click', function () {
         heart.classList.toggle('toggle');
@@ -272,9 +272,62 @@ fetch('https://pdp-movies-78.onrender.com/api/movies')
       numMovies.textContent = data.length;
     }
 
+    function sortTable() {
+      sortTableByColumn(titleTh, 0, 'string');
+      sortTableByColumn(genreTh, 1, 'string');
+      sortTableByColumn(stockTh, 2, 'number');
+      sortTableByColumn(rateTh, 3, 'number');
+
+
+      let sort = {
+        columnIndex: -1,
+        ascending: true
+      };
+
+      function sortTableByColumn(column, columnIndex, dataType) {
+        column.addEventListener('click', function () {
+          if (sort.columnIndex === columnIndex) {
+            sort.ascending = !sort.ascending;
+          } else {
+            sort.columnIndex = columnIndex;
+            sort.ascending = true;
+          }
+
+          const rows = Array.from(tbody.getElementsByTagName('tr'));
+          const sortedRows = sortRows(rows, columnIndex, dataType);
+          if (!sort.ascending) {
+            sortedRows.reverse();
+          }
+          updateTable(sortedRows);
+        });
+      }
+
+      function sortRows(rows, columnIndex, dataType) {
+        return rows.sort((rowA, rowB) => {
+          const cellA = rowA.getElementsByTagName('td')[columnIndex].textContent;
+          const cellB = rowB.getElementsByTagName('td')[columnIndex].textContent;
+
+          if (dataType === 'string') {
+            return cellA.localeCompare(cellB);
+          } else if (dataType === 'number') {
+            return parseFloat(cellA) - parseFloat(cellB);
+          }
+        });
+      }
+
+      function updateTable(rows) {
+        tbody.innerHTML = '';
+        rows.forEach(row => {
+          tbody.appendChild(row);
+        });
+      }
+    }
+
     function init() {
       listeners();
+      sortTable();
     }
+
     init();
 
   });

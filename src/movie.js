@@ -48,20 +48,15 @@ movieForm.addEventListener('submit', async function (e) {
   const dailyRentalRate = document.getElementById('rate').value;
 
   try {
-    const genreResponse = await axios.get('https://pdp-movies-78.onrender.com/api/genres', {
-      headers: {
-        'x-auth-token': userToken
-      }
-    });
+    const genreResponse = await axios.get('https://pdp-movies-78.onrender.com/api/genres', {});
     const genres = genreResponse.data;
-    const foundGenre = genres.find(genre => genre.name === genreName);
+    const genreFond = genres.find(genre => genre.name === genreName);
 
-    if (!foundGenre) {
+    if (!genreFond) {
       alert('Genre not found❌');
-      return;
     }
 
-    const genreId = foundGenre._id;
+    const genreId = genreFond._id;
 
     const movieResponse = await axios.post('https://pdp-movies-78.onrender.com/api/movies', {
       title,
@@ -76,6 +71,7 @@ movieForm.addEventListener('submit', async function (e) {
 
     console.log(movieResponse.data);
     alert('Film muvaffaqiyatli yaratildi!');
+    location.reload();
   }
   catch (error) {
     console.error(error);
@@ -83,7 +79,7 @@ movieForm.addEventListener('submit', async function (e) {
       alert(`Serverda xatolik yuz berdi: ${error.response.data}`);
     }
     else {
-      alert('Malumotlar serverga jo\'natilmadi!❌');
+      alert('Malumotlar serverga jonatilmadi!❌');
     }
   }
 });
