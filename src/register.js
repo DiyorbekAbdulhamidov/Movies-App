@@ -6,7 +6,6 @@ const brendName = document.querySelector('.navbar-brand');
 const emailInput = document.querySelector('#exampleInputEmail1');
 const passwordInput = document.querySelector('#exampleInputPassword1');
 const nameInput = document.querySelector('#exampleInputPassword2');
-const registerBtn = document.querySelector('.registerBtn');
 const form = document.querySelector('.regForm');
 
 if (window.location.href === `${links.registerLink}#` || window.location.href === `${links.registerLink}`) {
@@ -46,4 +45,4 @@ form.addEventListener('submit', async (e) => {
       alert(`Ma'lumotlar serverga jo'natilmadi!❌`);
     }
   }
-});
+}); 
