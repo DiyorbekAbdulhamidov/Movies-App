@@ -13,14 +13,14 @@
 <body>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">Diyorbek</a>
+      <a class="navbar-brand" id="brendName" href="#">Diyorbek</a>
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link login" aria-current="page" href="#">Login</a>
+            <a class="nav-link login" id="loginPage" aria-current="page" href="#">Login</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link register" href="#">Register</a>
+            <a class="nav-link" id="registerPage" href="#">Logout</a>
           </li>
         </ul>
       </div>
@@ -35,25 +35,26 @@
       </div>
       <div class="mb-3">
         <label for="exampleInputPassword1" class="form-label">Genre</label>
-          <select name="genreId" id="genreId" form="form-control" class="form-select" aria-label="Default select example">
-            <option value="volvo">Action</option>
-            <option value="saab">Comedy</option>
-            <option value="opel">Romance</option>
-            <option value="audi">Thriller</option>
+          <select name="genreId" id="genrs" form="form-control" class="form-select" aria-label="Default select example">
+            <option value=""></option>
+            <option value="Action">Action</option>
+            <option value="Comedy">Comedy</option>
+            <option value="Romance">Romance</option>
+            <option value="Thriller">Thriller</option>
         </select>
       </div>
       <div class="mb-3">
         <label for="exampleInputPassword1" class="form-label">Number In Stock</label>
-        <input type="number" class="form-control" id="">
+        <input type="number" class="form-control" id="stock">
       </div>
       <div class="mb-3">
         <label for="exampleInputPassword1" class="form-label">Rate</label>
-        <input type="number" class="form-control" id="">
+        <input type="number" class="form-control" id="rate">
       </div>
       <button type="submit" class="btn btn-primary">Save</button>
     </form>
   </div>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-  <script type="module" src="/src/login.js"></script>
+  <script type="module" src="/src/movie.js"></script>
 </body>
 </html>
